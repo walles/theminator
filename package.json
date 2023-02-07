@@ -9,15 +9,12 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:darklight-theme-generator.helloWorld"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "darklight-theme-generator.helloWorld",
-        "title": "Hello World"
+        "command": "darklight-theme-generator.openGenerateThemePanel",
+        "title": "Open Generate Theme Panel"
       }
     ]
   },
