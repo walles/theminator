@@ -13,8 +13,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "darklight-theme-generator.openGenerateThemePanel",
-        "title": "Open Generate Theme Panel"
+        "command": "darklight-theme-generator.toggleGenerateThemePanel",
+        "title": "Toggle Generate Theme Panel"
       }
     ]
   },
