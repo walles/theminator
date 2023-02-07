@@ -14,7 +14,7 @@
     "commands": [
       {
         "command": "darklight-theme-generator.toggleGenerateThemePanel",
-        "title": "Toggle Generate Theme Panel"
+        "title": "Toggle Theme Generator Panel"
       }
     ]
   },
