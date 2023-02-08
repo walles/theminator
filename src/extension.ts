@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
 
+// This file is heavily influenced by this documentation:
+// https://code.visualstudio.com/api/extension-guides/webview
+
 const viewType = "themeGenerator";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -31,7 +34,8 @@ export function activate(context: vscode.ExtensionContext) {
         (message) => {
           switch (message.command) {
             case "generate":
-              vscode.window.showErrorMessage(message.hello);
+              console.log("Received Generate request: %o", message);
+              vscode.window.showErrorMessage(message.backgroundColor);
               return;
           }
         },
@@ -67,7 +71,7 @@ function getWebviewContent() {
       function generate() {
         vscode.postMessage({
           command: 'generate',
-          hello: 'Please generate a theme!'
+          backgroundColor: document.getElementById('backgroundColor').value
         })
       }
 	  </script>
