@@ -19,6 +19,7 @@ workspace:
 
 # TODO
 
+- Add a Reset button
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
@@ -28,6 +29,8 @@ workspace:
 - Add a checkbox for using our theme or not. "Not" should fall back to whatever
   theme was in use before we started doing our thing. Or just some defaults if
   that's not possible.
+- Scope our color customizations so we don't overwrite anything the user has
+  done. Mind the Reset button.
 - Publish to VSCode Market
 - Make generated themes exportable. Or just refer to [this
   documentation](https://code.visualstudio.com/api/extension-guides/color-theme#create-a-new-color-theme)?

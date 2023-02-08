@@ -56,8 +56,20 @@ export function activate(context: vscode.ExtensionContext) {
 function regenerateTheme(backgroundColor: string) {
   vscode.window.showErrorMessage(backgroundColor);
 
-  // FIXME: Fill in workbench.colorCustomizations:
+  // Fill in workbench.colorCustomizations:
   // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
+  const config = vscode.workspace.getConfiguration();
+
+  // FIXME: Generate these!
+  const newColorCustomizations = {
+    "sideBar.background": backgroundColor,
+  };
+
+  config.update(
+    "workbench.colorCustomizations",
+    newColorCustomizations,
+    vscode.ConfigurationTarget.Global
+  );
 
   // FIXME: Fill in editor.tokenColorCustomizations:
   // https://code.visualstudio.com/api/extension-guides/color-theme#syntax-colors
