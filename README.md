@@ -1,6 +1,6 @@
-# darklight-theme-generator README
+# Theminator Theme Generator
 
-This is the README for your extension "darklight-theme-generator". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "theminator-theme-generator". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
@@ -19,7 +19,8 @@ For example if there is an image subfolder under your extension project workspac
 - Add a checkbox for using our theme or not. "Not" should fall back to whatever
   theme was in use before we started doing our thing. Or just some defaults if
   that's not possible.
+- Regenerate theme when user updates color setting. Maybe with some flooding
+  protection so we don't regenerate too often?
 - Go through PRs and issues in
   <https://github.com/usernamehw/vscode-theme-generator> to see if there's
   something we also need to handle.
-- Consider our name. "Theminator Theme Generator"?

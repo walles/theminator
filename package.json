@@ -1,6 +1,6 @@
 {
-  "name": "darklight-theme-generator",
-  "displayName": "Darklight Theme Generator",
+  "name": "theminator-theme-generator",
+  "displayName": "Theminator Theme Generator",
   "description": "Generates themes based on a background color",
   "version": "0.0.1",
   "engines": {
@@ -13,7 +13,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "darklight-theme-generator.toggleGenerateThemePanel",
+        "command": "theminator-theme-generator.toggleGenerateThemePanel",
         "title": "Toggle Theme Generator Panel"
       }
     ]

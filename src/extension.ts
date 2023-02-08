@@ -7,14 +7,14 @@ const viewType = "themeGenerator";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log(
-    'Congratulations, your extension "darklight-theme-generator" is now active!'
+    'Congratulations, your extension "theminator-theme-generator" is now active!'
   );
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
   let disposable = vscode.commands.registerCommand(
-    "darklight-theme-generator.toggleGenerateThemePanel",
+    "theminator-theme-generator.toggleGenerateThemePanel",
     () => {
       // FIXME: Toggle UI off if it was already visible
 
