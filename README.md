@@ -16,7 +16,10 @@ For example if there is an image subfolder under your extension project workspac
 
 - Generate UI theme
 - Generate matching syntax theme
+- Add a checkbox for using our theme or not. "Not" should fall back to whatever
+  theme was in use before we started doing our thing. Or just some defaults if
+  that's not possible.
 - Go through PRs and issues in
   <https://github.com/usernamehw/vscode-theme-generator> to see if there's
-  something we should handle.
+  something we also need to handle.
 - Consider our name. "Theminator Theme Generator"?
