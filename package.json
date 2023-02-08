@@ -14,7 +14,7 @@
     "commands": [
       {
         "command": "theminator-theme-generator.toggleGenerateThemePanel",
-        "title": "Toggle Theme Generator Panel"
+        "title": "Theminator: Toggle"
       }
     ]
   },

@@ -35,8 +35,13 @@ export function activate(context: vscode.ExtensionContext) {
           switch (message.command) {
             case "generate":
               console.log("Received Generate request: %o", message);
-              vscode.window.showErrorMessage(message.backgroundColor);
+              regenerateTheme(message.backgroundColor);
               return;
+            default:
+              console.error(
+                "Received unsupported message request: %o",
+                message
+              );
           }
         },
         undefined,
@@ -46,6 +51,19 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+}
+
+function regenerateTheme(backgroundColor: string) {
+  vscode.window.showErrorMessage(backgroundColor);
+
+  // FIXME: Fill in workbench.colorCustomizations:
+  // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
+
+  // FIXME: Fill in editor.tokenColorCustomizations:
+  // https://code.visualstudio.com/api/extension-guides/color-theme#syntax-colors
+
+  // FIXME: Consider Semantic Highlighting as well?
+  // https://code.visualstudio.com/api/extension-guides/color-theme#semantic-colors
 }
 
 function getWebviewContent() {
