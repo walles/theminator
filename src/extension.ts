@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import { keys } from "./keys";
+import { Color } from "./color";
 
 // This file is heavily influenced by this documentation:
 // https://code.visualstudio.com/api/extension-guides/webview
@@ -53,6 +55,44 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
+/** Given a background color, generate a suitable foreground color */
+function generateForegroundColor(backgroundColor: string): string {
+  const color = Color.randomize();
+
+  // FIXME: Verify that the contrast is within some certain range:
+  // https://www.npmjs.com/package/color-contrast
+  //
+  // If not, try randomizing a new one. Fail after 30 iterations.
+
+  return color.toString();
+}
+
+/** Given a background color, generate another color which is neither foreground
+ * nor background */
+function generateOtherColor(backgroundColor: string): string {
+  const color = Color.randomize();
+
+  // FIXME: Verify that the contrast is within some certain range:
+  // https://www.npmjs.com/package/color-contrast
+  //
+  // If not, try randomizing a new one. Fail after 30 iterations.
+
+  return color.toString();
+}
+
+function generateColorForKey(key: string, backgroundColor: string): string {
+  if (key.toLowerCase().includes("background")) {
+    // FIXME: Randomize this a bit around the actual background color
+    return backgroundColor;
+  }
+
+  if (key.toLowerCase().includes("foreground")) {
+    return generateForegroundColor(backgroundColor);
+  }
+
+  return generateOtherColor(backgroundColor);
+}
+
 function regenerateTheme(backgroundColor: string) {
   vscode.window.showErrorMessage(backgroundColor);
 
@@ -60,10 +100,10 @@ function regenerateTheme(backgroundColor: string) {
   // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
   const config = vscode.workspace.getConfiguration();
 
-  // FIXME: Generate these!
-  const newColorCustomizations = {
-    "sideBar.background": backgroundColor,
-  };
+  let newColorCustomizations: Record<string, string> = {};
+  for (var key of keys) {
+    newColorCustomizations[key] = generateColorForKey(key, backgroundColor);
+  }
 
   config.update(
     "workbench.colorCustomizations",

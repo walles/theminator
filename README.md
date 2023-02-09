@@ -17,6 +17,11 @@ workspace:
 > show off your extension! We recommend short, focused animations that are easy
 > to follow.
 
+# In Case of Emergency
+
+Color customizations are stored in `~/Library/Application Support/Code/User/settings.json`
+under the `workbench.colorCustomizations` key and can be restored with any text editor.
+
 # TODO
 
 - Add a Reset button
@@ -24,6 +29,8 @@ workspace:
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
 - Remove Coding Cat references from the docs example
+- Move into a smaller UI, something like the Tweet Feedback thingy that VSCode
+  comes with maybe.
 - Consider what our command `title` should be in `package.json` for it to be
   easily findable
 - Add a checkbox for using our theme or not. "Not" should fall back to whatever
