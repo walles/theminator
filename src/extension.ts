@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
           switch (message.command) {
             case "generate":
               console.log("Received Generate request: %o", message);
-              regenerateTheme(message.backgroundColor);
+              regenerateTheme(Color.parse(message.backgroundColor));
               return;
             default:
               console.error(
@@ -55,54 +55,32 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
-/** Given a background color, generate a suitable foreground color */
-function generateForegroundColor(backgroundColor: string): string {
-  const color = Color.randomize();
+function generateColorForKey(key: string, backgroundColor: Color): Color {
+  // FIXME: Tune these contrast levels?
 
-  // FIXME: Verify that the contrast is within some certain range:
-  // https://www.npmjs.com/package/color-contrast
-  //
-  // If not, try randomizing a new one. Fail after 30 iterations.
-
-  return color.toString();
-}
-
-/** Given a background color, generate another color which is neither foreground
- * nor background */
-function generateOtherColor(backgroundColor: string): string {
-  const color = Color.randomize();
-
-  // FIXME: Verify that the contrast is within some certain range:
-  // https://www.npmjs.com/package/color-contrast
-  //
-  // If not, try randomizing a new one. Fail after 30 iterations.
-
-  return color.toString();
-}
-
-function generateColorForKey(key: string, backgroundColor: string): string {
   if (key.toLowerCase().includes("background")) {
-    // FIXME: Randomize this a bit around the actual background color
-    return backgroundColor;
+    return Color.contrastRatio(backgroundColor, null, 3);
   }
 
   if (key.toLowerCase().includes("foreground")) {
-    return generateForegroundColor(backgroundColor);
+    return Color.contrastRatio(backgroundColor, 7, null);
   }
 
-  return generateOtherColor(backgroundColor);
+  // Neither background nor foreground
+  return Color.contrastRatio(backgroundColor, 3, 4);
 }
 
-function regenerateTheme(backgroundColor: string) {
-  vscode.window.showErrorMessage(backgroundColor);
-
+function regenerateTheme(backgroundColor: Color) {
   // Fill in workbench.colorCustomizations:
   // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
   const config = vscode.workspace.getConfiguration();
 
   let newColorCustomizations: Record<string, string> = {};
   for (var key of keys) {
-    newColorCustomizations[key] = generateColorForKey(key, backgroundColor);
+    newColorCustomizations[key] = generateColorForKey(
+      key,
+      backgroundColor
+    ).toString();
   }
 
   config.update(
@@ -116,6 +94,8 @@ function regenerateTheme(backgroundColor: string) {
 
   // FIXME: Consider Semantic Highlighting as well?
   // https://code.visualstudio.com/api/extension-guides/color-theme#semantic-colors
+
+  vscode.window.showErrorMessage("Theminator theme generated!");
 }
 
 function getWebviewContent() {
