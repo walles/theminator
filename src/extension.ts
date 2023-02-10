@@ -88,7 +88,7 @@ function regenerateTheme(backgroundColor: Color) {
   const config = vscode.workspace.getConfiguration();
 
   // FIXME: For each category in keys, randomly pick a hue. Then randomize the
-  // luminance (strength) of the colors.
+  // luminance of the colors.
 
   let newColorCustomizations: Record<string, string> = {};
   for (const key of keys) {

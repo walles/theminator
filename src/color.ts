@@ -35,6 +35,60 @@ export class Color {
     );
   }
 
+  /**
+   * @param hue 0-360
+   * @param saturation 0-1
+   * @param lightness 0-1
+   */
+  static hsl(hue: number, saturation: number, lightness: number): Color {
+    // FIXME: The L here is lightness, but we want luminance!
+
+    // Maths from here:
+    // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
+
+    if (saturation === 0) {
+      const component = lightness * 255;
+      return new Color(component, component, component);
+    }
+
+    let temporary1: number;
+    if (lightness < 0.5) {
+      temporary1 = lightness * (1 + saturation);
+    } else {
+      temporary1 = lightness + saturation - lightness * saturation;
+    }
+
+    const temporary2 = 2 * lightness - temporary1;
+
+    hue /= 360;
+
+    const temporaryR = (hue + 0.333) % 1;
+    const temporaryG = hue;
+    const temporaryB = (hue + 1 - 0.333) % 1;
+
+    function toRgbComponent(temporaryX: number): number {
+      if (6 * temporaryX < 1) {
+        return temporary2 + (temporary1 - temporary2) * 6 * temporaryX;
+      }
+      if (2 * temporaryX < 1) {
+        return temporary1;
+      }
+      if (3 * temporaryX < 2) {
+        return (
+          temporary2 + (temporary1 - temporary2) * (0.666 - temporaryR) * 6
+        );
+      }
+
+      return temporary2;
+    }
+
+    return new Color(
+      toRgbComponent(temporaryR) * 255,
+      toRgbComponent(temporaryG) * 255,
+      toRgbComponent(temporaryB) * 255
+    );
+  }
+
   /** Create another color with the given contrast ratio against the base one. */
   static contrastRatio(
     base: Color,
@@ -70,30 +124,34 @@ export class Color {
     return fallback;
   }
 
-  luminance(): number {
-    // Ref: https://stackoverflow.com/a/9733420/473672
-    const a = [this.r, this.g, this.b].map(function (v) {
-      v /= 255;
-      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  lightness(): number {
+    // FIXME: We want a luminance function, not lightness!
+    // https://stackoverflow.com/a/9733420/473672
+
+    // From:
+    // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
+    return (
+      (Math.max(this.r, this.g, this.g) + Math.min(this.r, this.g, this.b)) /
+      2 /
+      255
+    );
   }
 
   contrast(other: Color): number {
     // Ref: https://stackoverflow.com/a/9733420/473672
-    const luminance1 = this.luminance();
-    const luminance2 = other.luminance();
-    const brightest = Math.max(luminance1, luminance2);
-    const darkest = Math.min(luminance1, luminance2);
+    const lightness1 = this.lightness();
+    const lightness2 = other.lightness();
+    const brightest = Math.max(lightness1, lightness2);
+    const darkest = Math.min(lightness1, lightness2);
     return (brightest + 0.05) / (darkest + 0.05);
   }
 
   toString(): string {
     return (
       "#" +
-      this.r.toString(16).padStart(2, "0") +
-      this.g.toString(16).padStart(2, "0") +
-      this.b.toString(16).padStart(2, "0")
+      Math.round(this.r).toString(16).padStart(2, "0") +
+      Math.round(this.g).toString(16).padStart(2, "0") +
+      Math.round(this.b).toString(16).padStart(2, "0")
     );
   }
 }
