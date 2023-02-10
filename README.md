@@ -1,21 +1,15 @@
 # Theminator Theme Generator
 
-This is the README for your extension "theminator-theme-generator". After
-writing up a brief description, we recommend including the following sections.
+Theme generator for Visual Studio Code.
 
-## Features
+The goal is to generate good looking themes based only on a background color.
 
-Describe specific features of your extension including screenshots of your
-extension in action. Image paths are relative to this README file.
+Initially inspired by wanting to lowlight
+`invalid.deprecated.line-too-long.git-commit` and
+`invalid.illegal.line-too-long.git-commit` for [my Git Commit Messages
+extension](https://github.com/walles/git-commit-message-plus).
 
-For example if there is an image subfolder under your extension project
-workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to
-> show off your extension! We recommend short, focused animations that are easy
-> to follow.
+FIXME: Imagine an animated-gif demo here
 
 # In Case of Emergency
 
@@ -24,11 +18,12 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Add a Reset button
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
 - Remove Coding Cat references from the docs example
+- Scope our color customizations so we don't overwrite anything the user has
+  done. Mind the Reset button.
 - Move into a smaller UI, something like the Tweet Feedback thingy that VSCode
   comes with maybe.
 - Consider what our command `title` should be in `package.json` for it to be
@@ -36,8 +31,6 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 - Add a checkbox for using our theme or not. "Not" should fall back to whatever
   theme was in use before we started doing our thing. Or just some defaults if
   that's not possible.
-- Scope our color customizations so we don't overwrite anything the user has
-  done. Mind the Reset button.
 - Publish to VSCode Market
 - Make generated themes exportable. Or just refer to [this
   documentation](https://code.visualstudio.com/api/extension-guides/color-theme#create-a-new-color-theme)?

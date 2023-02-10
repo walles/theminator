@@ -39,6 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
               console.log("Received Generate request: %o", message);
               regenerateTheme(Color.parse(message.backgroundColor));
               return;
+            case "reset":
+              console.log("Received Reset request: %o", message);
+              resetTheme();
+              return;
             default:
               console.error(
                 "Received unsupported message request: %o",
@@ -56,8 +60,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function generateColorForKey(key: string, backgroundColor: Color): Color {
-  // FIXME: Tune these contrast levels?
-
   if (key.toLowerCase().includes("background")) {
     return Color.contrastRatio(backgroundColor, null, 3);
   }
@@ -70,13 +72,26 @@ function generateColorForKey(key: string, backgroundColor: Color): Color {
   return Color.contrastRatio(backgroundColor, 3, 4);
 }
 
+function resetTheme() {
+  vscode.workspace
+    .getConfiguration()
+    .update(
+      "workbench.colorCustomizations",
+      undefined,
+      vscode.ConfigurationTarget.Global
+    );
+}
+
 function regenerateTheme(backgroundColor: Color) {
   // Fill in workbench.colorCustomizations:
   // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
   const config = vscode.workspace.getConfiguration();
 
+  // FIXME: For each category in keys, randomly pick a hue. Then randomize the
+  // luminance (strength) of the colors.
+
   let newColorCustomizations: Record<string, string> = {};
-  for (var key of keys) {
+  for (const key of keys) {
     newColorCustomizations[key] = generateColorForKey(
       key,
       backgroundColor
@@ -94,8 +109,6 @@ function regenerateTheme(backgroundColor: Color) {
 
   // FIXME: Consider Semantic Highlighting as well?
   // https://code.visualstudio.com/api/extension-guides/color-theme#semantic-colors
-
-  vscode.window.showErrorMessage("Theminator theme generated!");
 }
 
 function getWebviewContent() {
@@ -114,6 +127,9 @@ function getWebviewContent() {
 	  <div>
       <button id="generate" type="button" onclick="generate()">Generate Theme</button>
 	  </div>
+	  <div>
+      <button id="reset" type="button" onclick="reset()">Reset Theme</button>
+	  </div>
 
 	  <script>
 		  const vscode = acquireVsCodeApi();
@@ -121,8 +137,14 @@ function getWebviewContent() {
       function generate() {
         vscode.postMessage({
           command: 'generate',
-          backgroundColor: document.getElementById('backgroundColor').value
-        })
+          backgroundColor: document.getElementById('backgroundColor').value,
+        });
+      }
+
+      function reset() {
+        vscode.postMessage({
+          command: 'reset',
+        });
       }
 	  </script>
 	</body>
