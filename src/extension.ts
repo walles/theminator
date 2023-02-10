@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { keys } from "./keys";
 import { Color } from "./color";
+import { generateColors } from "./colorsGenerator";
 
 // This file is heavily influenced by this documentation:
 // https://code.visualstudio.com/api/extension-guides/webview
@@ -59,19 +60,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
-function generateColorForKey(key: string, backgroundColor: Color): Color {
-  if (key.toLowerCase().includes("background")) {
-    return Color.contrastRatio(backgroundColor, null, 3);
-  }
-
-  if (key.toLowerCase().includes("foreground")) {
-    return Color.contrastRatio(backgroundColor, 7, null);
-  }
-
-  // Neither background nor foreground
-  return Color.contrastRatio(backgroundColor, 3, 4);
-}
-
 function resetTheme() {
   vscode.workspace
     .getConfiguration()
@@ -82,25 +70,14 @@ function resetTheme() {
     );
 }
 
-function regenerateTheme(backgroundColor: Color) {
+function regenerateTheme(background: Color) {
   // Fill in workbench.colorCustomizations:
   // https://code.visualstudio.com/api/extension-guides/color-theme#workbench-colors
   const config = vscode.workspace.getConfiguration();
 
-  // FIXME: For each category in keys, randomly pick a hue. Then randomize the
-  // luminance of the colors.
-
-  let newColorCustomizations: Record<string, string> = {};
-  for (const key of keys) {
-    newColorCustomizations[key] = generateColorForKey(
-      key,
-      backgroundColor
-    ).toString();
-  }
-
   config.update(
     "workbench.colorCustomizations",
-    newColorCustomizations,
+    generateColors(background, keys),
     vscode.ConfigurationTarget.Global
   );
 
