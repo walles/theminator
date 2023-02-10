@@ -124,6 +124,33 @@ export class Color {
     return fallback;
   }
 
+  hue(): number {
+    // Source: https://stackoverflow.com/a/26233318/473672
+
+    const min = Math.min(this.r, this.g, this.b);
+    const max = Math.max(this.r, this.g, this.b);
+
+    if (min === max) {
+      return 0;
+    }
+
+    let hue = 0;
+    if (max === this.r) {
+      hue = (this.g - this.b) / (max - min);
+    } else if (max === this.g) {
+      hue = 2 + (this.b - this.r) / (max - min);
+    } else {
+      hue = 4 + (this.r - this.g) / (max - min);
+    }
+
+    hue *= 60;
+    if (hue < 0) {
+      hue += 360;
+    }
+
+    return hue;
+  }
+
   lightness(): number {
     // FIXME: We want a luminance function, not lightness!
     // https://stackoverflow.com/a/9733420/473672

@@ -10,6 +10,7 @@ suite("Color Test Suite", () => {
     assert.ok(color.g >= 0 && color.g < 256);
     assert.ok(color.b >= 0 && color.b < 256);
 
+    assert.equal(Math.round(color.hue()), 42);
     assert.equal(color.lightness(), 0.7);
     assert.equal(color.toString(), "#c9bc9c");
   });
