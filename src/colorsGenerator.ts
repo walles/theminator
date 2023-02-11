@@ -72,11 +72,11 @@ function getContrastLightness(
 ): number | undefined {
   let contrast: number;
   if (name.toLowerCase().includes("background")) {
-    contrast = 1.3;
+    contrast = 2;
   } else if (name.toLowerCase().includes("foreground")) {
     contrast = 8;
   } else {
-    contrast = 2;
+    contrast = 3;
   }
 
   // Contrast is computed as (brightest + 0.05) / (darkest + 0.05). So if we
