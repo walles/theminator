@@ -18,6 +18,8 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
+- Make sure all background colors are close to the requested one, not just in
+  intensity but also in hue. Ask for a red background and see what happens.
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?

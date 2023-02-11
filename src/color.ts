@@ -14,15 +14,6 @@ export class Color {
     this.b = b;
   }
 
-  /** Generate a random color */
-  static randomize(): Color {
-    return new Color(
-      Math.floor(Math.random() * 256),
-      Math.floor(Math.random() * 256),
-      Math.floor(Math.random() * 256)
-    );
-  }
-
   /**
    * @param hrrggbb Example: "#112233"
    * @returns hrrggbb parsed into a color
@@ -87,41 +78,6 @@ export class Color {
       toRgbComponent(temporaryG) * 255,
       toRgbComponent(temporaryB) * 255
     );
-  }
-
-  /** Create another color with the given contrast ratio against the base one. */
-  static contrastRatio(
-    base: Color,
-    min: number | null,
-    max: number | null
-  ): Color {
-    for (let i = 0; i < 30; i++) {
-      const candidate = Color.randomize();
-      const contrast = candidate.contrast(base);
-      if (min !== null && contrast < min) {
-        continue;
-      }
-      if (max !== null && contrast > max) {
-        continue;
-      }
-      return candidate;
-    }
-
-    if (min === null) {
-      console.error(
-        `Failed to generate color with max contrast ${max} vs ${base}, falling back on the base color`
-      );
-      return base;
-    }
-
-    // FIXME: Fall back on the best one, not on a random one
-    const fallback = Color.randomize();
-    console.error(
-      `Failed to generate color with contrast ${min}-${max} vs ${base}, falling back on ${fallback} with contrast ${fallback.contrast(
-        base
-      )}`
-    );
-    return fallback;
   }
 
   hue(): number {
