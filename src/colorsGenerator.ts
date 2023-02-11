@@ -29,7 +29,7 @@ export function generateColors(
   }
 
   // Randomize colors by category
-  let newColorCustomizations: Record<string, string> = {};
+  const newColorCustomizations: Record<string, string> = {};
   for (const entry of colorNames.entries()) {
     const category = entry[0];
     const names = entry[1];
@@ -84,7 +84,7 @@ function getContrastLightness(
   // as brightest and solve for darkest or the other way around.
   const brighterLightness = contrast * baseLightness + 0.05 * contrast - 0.05;
   const darkerLightness = (baseLightness - 0.05 * contrast + 0.05) / contrast;
-  let lightnessCandidates = [];
+  const lightnessCandidates = [];
   if (brighterLightness <= 1) {
     lightnessCandidates.push(brighterLightness);
   }
