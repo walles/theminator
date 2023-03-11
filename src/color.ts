@@ -114,7 +114,7 @@ export class Color {
     // From:
     // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
     return (
-      (Math.max(this.r, this.g, this.g) + Math.min(this.r, this.g, this.b)) /
+      (Math.max(this.r, this.g, this.b) + Math.min(this.r, this.g, this.b)) /
       2 /
       255
     );
