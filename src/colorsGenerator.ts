@@ -40,12 +40,43 @@ function warnAboutMissingCustomizations(
   customizations: Record<string, string>,
   allKeys: string[]
 ) {
+  const percentDone = Math.floor(
+    (100 * Object.keys(customizations).length) / allKeys.length
+  );
+  console.log(
+    `Colors generated for ${Object.keys(customizations).length}/${
+      allKeys.length
+    }, or ${percentDone}%`
+  );
+
+  const notDonePrefixCounts: Record<string, number> = {};
+  const notDoneSuffixCounts: Record<string, number> = {};
   for (const key of allKeys) {
     if (customizations[key] !== undefined) {
+      // Already done, never mind
       continue;
     }
-    console.warn("Key not customized", key);
+
+    const prefix = key.split(".")[0];
+    const suffix = key.split(".")[key.split(".").length - 1];
+    notDonePrefixCounts[prefix] = (notDonePrefixCounts[prefix] || 0) + 1;
+    notDoneSuffixCounts[suffix] = (notDoneSuffixCounts[suffix] || 0) + 1;
   }
+
+  // Ref: https://stackoverflow.com/a/27376421/473672
+  const topNotDonePrefix = Object.keys(notDonePrefixCounts).reduce((a, b) =>
+    notDonePrefixCounts[a] > notDonePrefixCounts[b] ? a : b
+  );
+  const topNotDoneSuffix = Object.keys(notDoneSuffixCounts).reduce((a, b) =>
+    notDoneSuffixCounts[a] > notDoneSuffixCounts[b] ? a : b
+  );
+
+  console.log(
+    `The top not-done prefix is "${topNotDonePrefix}", it contains ${notDonePrefixCounts[topNotDonePrefix]} keys`
+  );
+  console.log(
+    `The top not-done suffix is "${topNotDoneSuffix}", we have ${notDoneSuffixCounts[topNotDoneSuffix]} of those`
+  );
 }
 
 function foregroundColorFromBackground(background: Color): Color {
