@@ -84,8 +84,8 @@ export class Color {
   hue(): number {
     // Source: https://stackoverflow.com/a/26233318/473672
 
-    const min = Math.min(this.r, this.g, this.b);
-    const max = Math.max(this.r, this.g, this.b);
+    const min = this.min();
+    const max = this.max();
 
     if (min === max) {
       return 0;
@@ -116,9 +116,7 @@ export class Color {
       return 0;
     }
 
-    const max = Math.max(this.r, this.g, this.b);
-    const min = Math.min(this.r, this.g, this.b);
-    const d = (max - min) / 255;
+    const d = (this.max() - this.min()) / 255;
     if (d === 0) {
       return 0;
     }
@@ -133,11 +131,17 @@ export class Color {
 
     // From:
     // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
-    return (
-      (Math.max(this.r, this.g, this.b) + Math.min(this.r, this.g, this.b)) /
-      2 /
-      255
-    );
+    return (this.max() + this.min()) / 2 / 255;
+  }
+
+  /** Maximum RGB component, 0-255 */
+  max(): number {
+    return Math.max(this.r, this.g, this.b);
+  }
+
+  /** Minimum RGB component, 0-255 */
+  min(): number {
+    return Math.min(this.r, this.g, this.b);
   }
 
   contrast(other: Color): number {
