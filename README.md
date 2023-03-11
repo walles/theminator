@@ -18,7 +18,7 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Give the selected editor tab the same background as the editor itself
+- Give tab text some color that's readable vs the tab background
 - Give not-selected editor tabs a color with some (but not too much) contrast vs
   the editor background color
 - Generate UI theme
@@ -51,3 +51,5 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
   than red in this case.
 - Make sure all background colors are of similar (but not necessarily the same)
   saturation and intensity as the base background color
+- Only generate colors we have explicit rules for, log warnings about the others
+- Give the selected editor tab the same background as the editor itself

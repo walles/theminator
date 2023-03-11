@@ -1,72 +1,40 @@
 import { Color } from "./color";
 
+/** Generate a complete theme. Log warnings for unsupported color customization
+ * keys. */
 export function generateColors(
   background: Color,
   keys: string[]
 ): Record<string, string> {
-  // For each category in keys, randomly pick a hue. Then randomize the
-  // luminance of the colors.
-
-  // Create a mapping from categories (like "debugConsole") to color names (like
-  // "errorForeground" or "progress.background")
-  const colorNames = new Map<string, string[]>();
+  const newColorCustomizations: Record<string, string> = {};
   for (const key of keys) {
-    const split = key.split(".", 2);
-    if (split.length === 1) {
-      // Set an empty category
-      split.unshift("");
+    if (key.endsWith(".background")) {
+      newColorCustomizations[key] =
+        generateBackgroundColor(background).toString();
       continue;
     }
-    const category = split[0];
-    const colorName = split[1];
-
-    let colorNamesArray = colorNames.get(category);
-    if (colorNamesArray === undefined) {
-      colorNamesArray = [];
-    }
-    colorNamesArray.push(colorName);
-    colorNames.set(category, colorNamesArray);
   }
 
-  // Randomize colors by category
-  const newColorCustomizations: Record<string, string> = {};
-  for (const entry of colorNames.entries()) {
-    const category = entry[0]; // Example: "titleBar"
-    const names = entry[1]; // Example: "border"
+  newColorCustomizations["tab.activeBackground"] =
+    newColorCustomizations["editor.background"];
+  newColorCustomizations["tab.unfocusedActiveBackground"] =
+    newColorCustomizations["editor.background"];
 
-    // Hue for this category
-    const categoryHue = Math.random() * 255;
-
-    for (const name of names) {
-      let customizeName = name;
-      if (category.length > 0) {
-        customizeName = category + "." + customizeName;
-      }
-
-      if (name === "background") {
-        newColorCustomizations[customizeName] =
-          generateBackgroundColor(background).toString();
-        continue;
-      }
-
-      const saturation = Math.random();
-
-      const lightness = getContrastLightness(background.lightness(), name);
-      if (lightness === undefined) {
-        // This problem is logged inside of getContrastLightness(), just skip
-        // here without logging
-        continue;
-      }
-
-      newColorCustomizations[customizeName] = Color.hsl(
-        categoryHue,
-        saturation,
-        lightness
-      ).toString();
-    }
-  }
+  warnAboutMissingCustomizations(newColorCustomizations, keys);
 
   return newColorCustomizations;
+}
+
+function warnAboutMissingCustomizations(
+  customizations: Record<string, string>,
+  allKeys: string[]
+) {
+  for (const key of allKeys) {
+    if (customizations[key] !== undefined) {
+      continue;
+    }
+    console.warn("Key not customized", key);
+  }
 }
 
 function generateBackgroundColor(base: Color): Color {
@@ -96,46 +64,4 @@ function generateBackgroundColor(base: Color): Color {
   }
 
   return Color.hsl(hue, saturation, lightness);
-}
-
-/**
- * @param baseLightness This is what you want to contrast against
- * @param name Inspiration for what kind of contrast you'll get
- */
-function getContrastLightness(
-  baseLightness: number,
-  name: string
-): number | undefined {
-  let contrast: number;
-  if (name.toLowerCase().includes("background")) {
-    contrast = 2;
-  } else if (name.toLowerCase().includes("foreground")) {
-    contrast = 8;
-  } else {
-    contrast = 3;
-  }
-
-  // Contrast is computed as (brightest + 0.05) / (darkest + 0.05). So if we
-  // want a particular contrast, that can be achieved by inserting baseLightness
-  // as brightest and solve for darkest or the other way around.
-  const brighterLightness = contrast * baseLightness + 0.05 * contrast - 0.05;
-  const darkerLightness = (baseLightness - 0.05 * contrast + 0.05) / contrast;
-  const lightnessCandidates = [];
-  if (brighterLightness <= 1) {
-    lightnessCandidates.push(brighterLightness);
-  }
-  if (darkerLightness >= 0) {
-    lightnessCandidates.push(darkerLightness);
-  }
-  if (lightnessCandidates.length === 0) {
-    console.warn(
-      `Cannot reach contrast ${contrast} for lightness ${baseLightness} and color name ${name}`
-    );
-    return undefined;
-  }
-
-  // Pick either candidate
-  return lightnessCandidates[
-    Math.floor(Math.random() * lightnessCandidates.length)
-  ];
 }
