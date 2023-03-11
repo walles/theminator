@@ -28,9 +28,6 @@ export function generateColors(
     colorNames.set(category, colorNamesArray);
   }
 
-  // FIXME: What to do on greyscale background colors? Randomize the hue?
-  const backgroundHue = background.hue();
-
   // Randomize colors by category
   const newColorCustomizations: Record<string, string> = {};
   for (const entry of colorNames.entries()) {
@@ -41,6 +38,17 @@ export function generateColors(
     const categoryHue = Math.random() * 255;
 
     for (const name of names) {
+      let customizeName = name;
+      if (category.length > 0) {
+        customizeName = category + "." + customizeName;
+      }
+
+      if (name === "background") {
+        newColorCustomizations[customizeName] =
+          generateBackgroundColor(background).toString();
+        continue;
+      }
+
       const saturation = Math.random();
 
       const lightness = getContrastLightness(background.lightness(), name);
@@ -50,18 +58,8 @@ export function generateColors(
         continue;
       }
 
-      let customizeName = name;
-      if (category.length > 0) {
-        customizeName = category + "." + customizeName;
-      }
-
-      let hue = categoryHue;
-      if (name === "background") {
-        hue = backgroundHue;
-      }
-
       newColorCustomizations[customizeName] = Color.hsl(
-        hue,
+        categoryHue,
         saturation,
         lightness
       ).toString();
@@ -69,6 +67,35 @@ export function generateColors(
   }
 
   return newColorCustomizations;
+}
+
+function generateBackgroundColor(base: Color): Color {
+  const saturationRadius = 0.1;
+  const lightnessRadius = 0.1;
+
+  const hue = base.hue();
+
+  let saturation =
+    base.saturation() - saturationRadius + Math.random() * saturationRadius * 2;
+  if (base.saturation() === 0) {
+    saturation = 0;
+  } else if (saturation < 0) {
+    saturation = 0;
+  } else if (saturation > 1) {
+    saturation = 1;
+  }
+
+  let lightness =
+    base.lightness() - lightnessRadius + Math.random() * lightnessRadius * 2;
+  if (base.lightness() === 0) {
+    lightness = 0;
+  } else if (lightness < 0) {
+    lightness = 0;
+  } else if (lightness > 1) {
+    lightness = 1;
+  }
+
+  return Color.hsl(hue, saturation, lightness);
 }
 
 /**

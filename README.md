@@ -18,10 +18,9 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Pick white as the background color. Figure out how to make the UI white rather
-  than red in this case.
-- Make sure all background colors are of similar (but not necessarily the same)
-  saturation and intensity as the base background color
+- Give the selected editor tab the same background as the editor itself
+- Give not-selected editor tabs a color with some (but not too much) contrast vs
+  the editor background color
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
@@ -48,3 +47,7 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 - Make sure all background colors are close to the requested one, not just in
   intensity but also in hue. Ask for a red background and see what happens.
+- Pick white as the background color. Figure out how to make the UI white rather
+  than red in this case.
+- Make sure all background colors are of similar (but not necessarily the same)
+  saturation and intensity as the base background color

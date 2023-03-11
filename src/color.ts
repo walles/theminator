@@ -80,6 +80,7 @@ export class Color {
     );
   }
 
+  /** 0-360 */
   hue(): number {
     // Source: https://stackoverflow.com/a/26233318/473672
 
@@ -107,6 +108,25 @@ export class Color {
     return hue;
   }
 
+  /** 0-1 */
+  saturation(): number {
+    // From: https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
+
+    if (this.lightness() === 0) {
+      return 0;
+    }
+
+    const max = Math.max(this.r, this.g, this.b);
+    const min = Math.min(this.r, this.g, this.b);
+    const d = (max - min) / 255;
+    if (d === 0) {
+      return 0;
+    }
+
+    return d / (1 - Math.abs(2 * this.lightness() - 1));
+  }
+
+  /** 0-1 */
   lightness(): number {
     // FIXME: We want a luminance function, not lightness!
     // https://stackoverflow.com/a/9733420/473672
