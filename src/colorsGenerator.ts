@@ -8,7 +8,7 @@ export function generateColors(
   // luminance of the colors.
 
   // Create a mapping from categories (like "debugConsole") to color names (like
-  // "errorForeground")
+  // "errorForeground" or "progress.background")
   const colorNames = new Map<string, string[]>();
   for (const key of keys) {
     const split = key.split(".", 2);
@@ -28,14 +28,17 @@ export function generateColors(
     colorNames.set(category, colorNamesArray);
   }
 
+  // FIXME: What to do on greyscale background colors? Randomize the hue?
+  const backgroundHue = background.hue();
+
   // Randomize colors by category
   const newColorCustomizations: Record<string, string> = {};
   for (const entry of colorNames.entries()) {
-    const category = entry[0];
-    const names = entry[1];
+    const category = entry[0]; // Example: "titleBar"
+    const names = entry[1]; // Example: "border"
 
     // Hue for this category
-    const hue = Math.random() * 255;
+    const categoryHue = Math.random() * 255;
 
     for (const name of names) {
       const saturation = Math.random();
@@ -51,6 +54,12 @@ export function generateColors(
       if (category.length > 0) {
         customizeName = category + "." + customizeName;
       }
+
+      let hue = categoryHue;
+      if (name === "background") {
+        hue = backgroundHue;
+      }
+
       newColorCustomizations[customizeName] = Color.hsl(
         hue,
         saturation,

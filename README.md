@@ -9,7 +9,7 @@ Initially inspired by wanting to lowlight
 `invalid.illegal.line-too-long.git-commit` for [my Git Commit Messages
 extension](https://github.com/walles/git-commit-message-plus).
 
-FIXME: Imagine an animated-gif demo here
+FIXME: Imagine an animated-webp demo here
 
 # In Case of Emergency
 
@@ -18,8 +18,10 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Make sure all background colors are close to the requested one, not just in
-  intensity but also in hue. Ask for a red background and see what happens.
+- Pick white as the background color. Figure out how to make the UI white rather
+  than red in this case.
+- Make sure all background colors are of similar (but not necessarily the same)
+  saturation and intensity as the base background color
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
@@ -41,3 +43,8 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 - Go through PRs and issues in
   <https://github.com/usernamehw/vscode-theme-generator> to see if there's
   something we also need to handle.
+
+## Done
+
+- Make sure all background colors are close to the requested one, not just in
+  intensity but also in hue. Ask for a red background and see what happens.
