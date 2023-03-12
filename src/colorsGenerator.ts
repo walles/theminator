@@ -92,11 +92,11 @@ function foregroundColorFromBackground(background: Color): Color {
   const saturation = 0.1;
 
   let lightness = 0.9;
-  if (background.lightness() > 0.5) {
+  if (background.perceivedLightness() > 0.5) {
     lightness = 0.1;
   }
 
-  return Color.hsl(hue, saturation, lightness);
+  return Color.hueSaturationLightness(hue, saturation, lightness);
 }
 
 /**
@@ -131,5 +131,5 @@ function generateColor(base: Color): Color {
     lightness = 1;
   }
 
-  return Color.hsl(hue, saturation, lightness);
+  return Color.hueSaturationLightness(hue, saturation, lightness);
 }

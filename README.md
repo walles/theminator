@@ -18,6 +18,8 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
+- Figure out why some generated background colors become red when the base
+  background color is a medium purple.
 - Give tab text some color that's readable vs the tab background
 - Make terminal background the same color as the editor background
 - Give not-selected editor tabs a color with some (but not too much) contrast vs

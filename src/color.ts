@@ -29,11 +29,13 @@ export class Color {
   /**
    * @param hue 0-360
    * @param saturation 0-1
-   * @param lightness 0-1
+   * @param lightness 0-1. Matches with the lightness() method.
    */
-  static hsl(hue: number, saturation: number, lightness: number): Color {
-    // FIXME: The L here is lightness, but we want luminance!
-
+  static hueSaturationLightness(
+    hue: number,
+    saturation: number,
+    lightness: number
+  ): Color {
     // Maths from here:
     // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
 
@@ -124,14 +126,53 @@ export class Color {
     return d / (1 - Math.abs(2 * this.lightness() - 1));
   }
 
-  /** 0-1 */
+  /**
+   * 0-1.
+   *
+   * Matches with the hueSaturationLightness() method.
+   *
+   * Not to be confused with perceivedLightness().
+   */
   lightness(): number {
-    // FIXME: We want a luminance function, not lightness!
-    // https://stackoverflow.com/a/9733420/473672
-
     // From:
     // https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
     return (this.max() + this.min()) / 2 / 255;
+  }
+
+  /** 0-1 */
+  luminance(): number {
+    // Maths from here: https://stackoverflow.com/a/56678483/473672
+    const vR = this.r / 255;
+    const vG = this.g / 255;
+    const vB = this.b / 255;
+
+    /** 0-1 => 0-1 */
+    function sRGBtoLin(colorChannel: number): number {
+      if (colorChannel <= 0.04045) {
+        return colorChannel / 12.92;
+      } else {
+        return Math.pow((colorChannel + 0.055) / 1.055, 2.4);
+      }
+    }
+
+    return (
+      0.2126 * sRGBtoLin(vR) + 0.7152 * sRGBtoLin(vG) + 0.0722 * sRGBtoLin(vB)
+    );
+  }
+
+  /**
+   * 0-1
+   *
+   * Not to be confused with lightness().
+   */
+  perceivedLightness(): number {
+    // Maths from here: https://stackoverflow.com/a/56678483/473672
+    const rawLuminance = this.luminance();
+    if (rawLuminance <= 216 / 24389) {
+      return rawLuminance * (24389 / 27);
+    } else {
+      return Math.pow(rawLuminance, 1 / 3) * 1.16 - 0.16;
+    }
   }
 
   /** Maximum RGB component, 0-255 */
@@ -142,15 +183,6 @@ export class Color {
   /** Minimum RGB component, 0-255 */
   min(): number {
     return Math.min(this.r, this.g, this.b);
-  }
-
-  contrast(other: Color): number {
-    // Ref: https://stackoverflow.com/a/9733420/473672
-    const lightness1 = this.lightness();
-    const lightness2 = other.lightness();
-    const brightest = Math.max(lightness1, lightness2);
-    const darkest = Math.min(lightness1, lightness2);
-    return (brightest + 0.05) / (darkest + 0.05);
   }
 
   toString(): string {

@@ -4,7 +4,7 @@ import { Color } from "../../color";
 
 suite("Color Test Suite", () => {
   test("HSL", () => {
-    const color = Color.hsl(42, 0.3, 0.7);
+    const color = Color.hueSaturationLightness(42, 0.3, 0.7);
 
     assert.ok(color.r >= 0 && color.r < 256);
     assert.ok(color.g >= 0 && color.g < 256);
