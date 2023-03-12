@@ -114,6 +114,7 @@ function generateColor(base: Color): Color {
   let saturation =
     base.saturation() - saturationRadius + Math.random() * saturationRadius * 2;
   if (base.saturation() === 0) {
+    // Base color is greyscale, let's not add any color to that
     saturation = 0;
   } else if (saturation < 0) {
     saturation = 0;
@@ -123,9 +124,7 @@ function generateColor(base: Color): Color {
 
   let lightness =
     base.lightness() - lightnessRadius + Math.random() * lightnessRadius * 2;
-  if (base.lightness() === 0) {
-    lightness = 0;
-  } else if (lightness < 0) {
+  if (lightness < 0) {
     lightness = 0;
   } else if (lightness > 1) {
     lightness = 1;
