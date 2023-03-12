@@ -20,6 +20,11 @@ export function generateColors(
       continue;
     }
 
+    if (key.endsWith(".border")) {
+      newColorCustomizations[key] = generateColor(background).toString();
+      continue;
+    }
+
     if (key.endsWith(".foreground")) {
       newColorCustomizations[key] = generateColor(foreground).toString();
       continue;

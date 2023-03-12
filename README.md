@@ -18,7 +18,11 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
+- Color the empty space next to the tabs with `tab.inactiveBackground`
 - Make terminal background the same color as the editor background
+- Make sure editor background and the sidebar background have some distance
+  between them
+- Give the editor line numbers the same background color as the editor
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
