@@ -15,18 +15,27 @@ export function generateColors(
   newColorCustomizations["foreground"] = foreground.toString();
 
   for (const key of keys) {
+    if (key === "editor.background" || key.endsWith(".border")) {
+      newColorCustomizations[key] = background.toString();
+      continue;
+    }
+
     if (key.endsWith(".background")) {
       newColorCustomizations[key] = generateColor(background).toString();
       continue;
     }
 
-    if (key.endsWith(".border")) {
+    if (key.endsWith(".activeBackground") || key.endsWith(".hoverBackground")) {
       newColorCustomizations[key] = generateColor(background).toString();
       continue;
     }
 
-    if (key.endsWith(".foreground")) {
-      newColorCustomizations[key] = generateColor(foreground).toString();
+    if (
+      key.endsWith(".foreground") ||
+      key.endsWith(".activeForeground") ||
+      key.endsWith(".hoverForeground")
+    ) {
+      newColorCustomizations[key] = foreground.toString();
       continue;
     }
   }
@@ -152,17 +161,8 @@ function fillInTabColors(
   const dimmedBackground = Color.createInBetween(background, foreground, 0.33);
   const dimmedForeground = Color.createInBetween(background, foreground, 0.66);
 
-  for (const key of [
-    "activeBackground",
-    "unfocusedActiveBackground",
-    "hoverBackground",
-    "unfocusedHoverBackground",
-  ]) {
+  for (const key of ["unfocusedActiveBackground", "unfocusedHoverBackground"]) {
     customizations["tab." + key] = background.toString();
-  }
-
-  for (const key of ["activeForeground", "hoverForeground"]) {
-    customizations["tab." + key] = foreground.toString();
   }
 
   for (const key of ["unfocusedActiveForeground", "unfocusedHoverForeground"]) {
