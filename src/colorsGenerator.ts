@@ -145,14 +145,27 @@ function fillInTabColors(
     "activeBackground",
     "unfocusedActiveBackground",
     "hoverBackground",
+    "unfocusedHoverBackground",
   ]) {
     customizations["tab." + key] = customizations["editor.background"];
   }
+
   for (const key of [
     "activeForeground",
     "unfocusedActiveForeground",
     "hoverForeground",
+    "unfocusedHoverForeground",
   ]) {
     customizations["tab." + key] = customizations["editor.foreground"];
+  }
+
+  for (const key of allKeys) {
+    if (!key.startsWith("tab.")) {
+      continue;
+    }
+    if (!key.toLowerCase().includes("border")) {
+      continue;
+    }
+    customizations[key] = customizations["editor.background"];
   }
 }

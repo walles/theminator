@@ -18,9 +18,9 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Make terminal background the same color as the editor background
 - Give not-selected editor tabs a color with some (but not too much) contrast vs
   the editor background color
+- Make terminal background the same color as the editor background
 - Generate UI theme
 - Generate matching syntax theme
 - How to add Semantic Highlighting to our theme? Sounds easy. Any reason not to?
