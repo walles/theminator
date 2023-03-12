@@ -18,8 +18,6 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Give not-selected editor tabs a color with some (but not too much) contrast vs
-  the editor background color
 - Make terminal background the same color as the editor background
 - Generate UI theme
 - Generate matching syntax theme
@@ -54,3 +52,5 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 - Only generate colors we have explicit rules for, log warnings about the others
 - Give the selected editor tab the same background as the editor itself
 - Give tab text some color that's readable vs the tab background
+- Give not-selected editor tabs a color with some (but not too much) contrast vs
+  the editor background color

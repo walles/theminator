@@ -141,22 +141,27 @@ function fillInTabColors(
   allKeys: string[],
   customizations: Record<string, string>
 ) {
+  const background = Color.parse(customizations["editor.background"]);
+  const foreground = Color.parse(customizations["editor.foreground"]);
+
+  const dimmedBackground = Color.createInBetween(background, foreground, 0.33);
+  const dimmedForeground = Color.createInBetween(background, foreground, 0.66);
+
   for (const key of [
     "activeBackground",
     "unfocusedActiveBackground",
     "hoverBackground",
     "unfocusedHoverBackground",
   ]) {
-    customizations["tab." + key] = customizations["editor.background"];
+    customizations["tab." + key] = background.toString();
   }
 
-  for (const key of [
-    "activeForeground",
-    "unfocusedActiveForeground",
-    "hoverForeground",
-    "unfocusedHoverForeground",
-  ]) {
-    customizations["tab." + key] = customizations["editor.foreground"];
+  for (const key of ["activeForeground", "hoverForeground"]) {
+    customizations["tab." + key] = foreground.toString();
+  }
+
+  for (const key of ["unfocusedActiveForeground", "unfocusedHoverForeground"]) {
+    customizations["tab." + key] = dimmedForeground.toString();
   }
 
   for (const key of allKeys) {
@@ -168,4 +173,11 @@ function fillInTabColors(
     }
     customizations[key] = customizations["editor.background"];
   }
+
+  customizations["tab.inactiveBackground"] = dimmedBackground.toString();
+  customizations["tab.unfocusedInactiveBackground"] =
+    dimmedBackground.toString();
+  customizations["tab.inactiveForeground"] = dimmedForeground.toString();
+  customizations["tab.unfocusedInactiveForeground"] =
+    dimmedForeground.toString();
 }

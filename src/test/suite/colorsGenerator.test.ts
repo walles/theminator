@@ -9,7 +9,11 @@ suite("Color Generator", () => {
     const background = Color.hueSaturationLightness(0, 0, 0);
     const generatedColors = generateColors(background, keys);
     for (const key in generatedColors) {
-      assert.equal(keys.includes(key), true);
+      assert.equal(
+        keys.includes(key),
+        true,
+        "No configuration expected for not-existing key: " + key
+      );
     }
   });
 

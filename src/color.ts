@@ -82,6 +82,20 @@ export class Color {
     );
   }
 
+  static createInBetween(
+    color1: Color,
+    color2: Color,
+    zeroToOne: number
+  ): Color {
+    const c1amount = 1 - zeroToOne;
+    const c2amount = zeroToOne;
+    return new Color(
+      color1.r * c1amount + color2.r * c2amount,
+      color1.g * c1amount + color2.g * c2amount,
+      color1.b * c1amount + color2.b * c2amount
+    );
+  }
+
   /** 0-360 */
   hue(): number {
     // Source: https://stackoverflow.com/a/26233318/473672
