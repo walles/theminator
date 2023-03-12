@@ -26,10 +26,7 @@ export function generateColors(
     }
   }
 
-  newColorCustomizations["tab.activeBackground"] =
-    newColorCustomizations["editor.background"];
-  newColorCustomizations["tab.unfocusedActiveBackground"] =
-    newColorCustomizations["editor.background"];
+  fillInTabColors(keys, newColorCustomizations);
 
   warnAboutMissingCustomizations(newColorCustomizations, keys);
 
@@ -131,4 +128,31 @@ function generateColor(base: Color): Color {
   }
 
   return Color.hueSaturationLightness(hue, saturation, lightness);
+}
+
+/**
+ * Generate a suitable color for some tab entry.
+ *
+ * @param key Example: "tab.inactiveModifiedBorder"
+ * @param background Global background color
+ * @param foreground Global foreground color
+ */
+function fillInTabColors(
+  allKeys: string[],
+  customizations: Record<string, string>
+) {
+  for (const key of [
+    "activeBackground",
+    "unfocusedActiveBackground",
+    "hoverBackground",
+  ]) {
+    customizations["tab." + key] = customizations["editor.background"];
+  }
+  for (const key of [
+    "activeForeground",
+    "unfocusedActiveForeground",
+    "hoverForeground",
+  ]) {
+    customizations["tab." + key] = customizations["editor.foreground"];
+  }
 }
