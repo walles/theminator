@@ -82,6 +82,11 @@ export class Color {
     );
   }
 
+  /**
+   * Create a color in between color1 and color2.
+   *
+   * @param zeroToOne 0 means all color1, 1 means all color2, 0.5 means 50% of each
+   */
   static createInBetween(
     color1: Color,
     color2: Color,

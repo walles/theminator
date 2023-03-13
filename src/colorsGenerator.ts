@@ -185,4 +185,10 @@ function fillInTabColors(
   customizations["tab.inactiveForeground"] = dimmedForeground.toString();
   customizations["tab.unfocusedInactiveForeground"] =
     dimmedForeground.toString();
+
+  customizations["editorGroupHeader.noTabsBackground"] =
+    dimmedBackground.toString();
+  customizations["editorGroupHeader.tabsBackground"] =
+    dimmedBackground.toString();
+  customizations["editorGroupHeader.tabsBorder"] = background.toString();
 }

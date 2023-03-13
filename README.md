@@ -18,7 +18,7 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- Color the empty space next to the tabs with `tab.inactiveBackground`
+- When making our theme, can we tell VSCode whether it is light or dark?
 - Make terminal background the same color as the editor background
 - Make sure editor background and the sidebar background have some distance
   between them
@@ -58,3 +58,4 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 - Give tab text some color that's readable vs the tab background
 - Give not-selected editor tabs a color with some (but not too much) contrast vs
   the editor background color
+- Color the empty space next to the tabs with `tab.inactiveBackground`
