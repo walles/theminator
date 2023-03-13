@@ -62,6 +62,7 @@ function warnAboutMissingCustomizations(
 
   const notDonePrefixCounts: Record<string, number> = {};
   const notDoneSuffixCounts: Record<string, number> = {};
+  const wordCloudCounts: Record<string, number> = {};
   for (const key of allKeys) {
     if (customizations[key] !== undefined) {
       // Already done, never mind
@@ -72,22 +73,64 @@ function warnAboutMissingCustomizations(
     const suffix = key.split(".")[key.split(".").length - 1];
     notDonePrefixCounts[prefix] = (notDonePrefixCounts[prefix] || 0) + 1;
     notDoneSuffixCounts[suffix] = (notDoneSuffixCounts[suffix] || 0) + 1;
+
+    for (const cloudWord of splitIntoCloudWords(key)) {
+      wordCloudCounts[cloudWord] = (wordCloudCounts[cloudWord] || 0) + 1;
+    }
   }
 
   // Ref: https://stackoverflow.com/a/27376421/473672
   const topNotDonePrefix = Object.keys(notDonePrefixCounts).reduce((a, b) =>
     notDonePrefixCounts[a] > notDonePrefixCounts[b] ? a : b
   );
-  const topNotDoneSuffix = Object.keys(notDoneSuffixCounts).reduce((a, b) =>
-    notDoneSuffixCounts[a] > notDoneSuffixCounts[b] ? a : b
-  );
-
   console.log(
     `The top not-done prefix is "${topNotDonePrefix}", it contains ${notDonePrefixCounts[topNotDonePrefix]} keys`
+  );
+
+  const topNotDoneSuffix = Object.keys(notDoneSuffixCounts).reduce((a, b) =>
+    notDoneSuffixCounts[a] > notDoneSuffixCounts[b] ? a : b
   );
   console.log(
     `The top not-done suffix is "${topNotDoneSuffix}", we have ${notDoneSuffixCounts[topNotDoneSuffix]} of those`
   );
+
+  const topWordCloudWord = Object.keys(wordCloudCounts).reduce((a, b) =>
+    wordCloudCounts[a] > wordCloudCounts[b] ? a : b
+  );
+  console.log(
+    `The top word cloud word is "${topWordCloudWord}", we have ${wordCloudCounts[topWordCloudWord]} of those`
+  );
+}
+
+/** Split "ape.bearCow" into ["ape", "bear", "cow"] */
+function splitIntoCloudWords(key: string): string[] {
+  const result = [];
+  let currentWord = "";
+  for (const char of key) {
+    if (char === ".") {
+      if (currentWord !== "") {
+        result.push(currentWord);
+      }
+      currentWord = "";
+      continue;
+    }
+
+    if (char === char.toUpperCase() && char !== char.toLowerCase()) {
+      if (currentWord !== "") {
+        result.push(currentWord);
+      }
+      currentWord = char.toLowerCase();
+      continue;
+    }
+
+    currentWord += char;
+  }
+
+  if (currentWord !== "") {
+    result.push(currentWord);
+  }
+
+  return result;
 }
 
 function foregroundColorFromBackground(background: Color): Color {

@@ -18,7 +18,14 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
 
 # TODO
 
-- When making our theme, can we tell VSCode whether it is light or dark?
+- Go through PRs and issues in
+  <https://github.com/usernamehw/vscode-theme-generator> to see if there's
+  something we also need to handle.
+- Regenerate theme when user updates color setting. Maybe with some flooding
+  protection so we don't regenerate too often?
+- Editor: Make sure colors for background, foreground, marked text, search hits
+  and same-text markings all play well together
+- Make sure the tabs above the terminal feel like the editor tabs
 - Make terminal background the same color as the editor background
 - Make sure editor background and the sidebar background have some distance
   between them
@@ -37,13 +44,9 @@ under the `workbench.colorCustomizations` key and can be restored with any text 
   theme was in use before we started doing our thing. Or just some defaults if
   that's not possible.
 - Publish to VSCode Market
+- When making our theme, can we tell VSCode whether it is light or dark?
 - Make generated themes exportable. Or just refer to [this
   documentation](https://code.visualstudio.com/api/extension-guides/color-theme#create-a-new-color-theme)?
-- Regenerate theme when user updates color setting. Maybe with some flooding
-  protection so we don't regenerate too often?
-- Go through PRs and issues in
-  <https://github.com/usernamehw/vscode-theme-generator> to see if there's
-  something we also need to handle.
 
 ## Done
 
