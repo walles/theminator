@@ -15,7 +15,11 @@ export function generateColors(
   newColorCustomizations["foreground"] = foreground.toString();
 
   for (const key of keys) {
-    if (key === "editor.background" || key.endsWith(".border")) {
+    if (
+      key === "editor.background" ||
+      key.endsWith(".border") ||
+      key.endsWith(".activeBorder")
+    ) {
       newColorCustomizations[key] = background.toString();
       continue;
     }
@@ -79,27 +83,37 @@ function warnAboutMissingCustomizations(
     }
   }
 
-  // Ref: https://stackoverflow.com/a/27376421/473672
-  const topNotDonePrefix = Object.keys(notDonePrefixCounts).reduce((a, b) =>
-    notDonePrefixCounts[a] > notDonePrefixCounts[b] ? a : b
-  );
-  console.log(
-    `The top not-done prefix is "${topNotDonePrefix}", it contains ${notDonePrefixCounts[topNotDonePrefix]} keys`
-  );
+  logTopCounts("not-done prefixes", notDonePrefixCounts);
+  logTopCounts("not-done suffixes", notDoneSuffixCounts);
+  logTopCounts("not-done word cloud words", wordCloudCounts);
+}
 
-  const topNotDoneSuffix = Object.keys(notDoneSuffixCounts).reduce((a, b) =>
-    notDoneSuffixCounts[a] > notDoneSuffixCounts[b] ? a : b
-  );
-  console.log(
-    `The top not-done suffix is "${topNotDoneSuffix}", we have ${notDoneSuffixCounts[topNotDoneSuffix]} of those`
-  );
+/**
+ * Logs a string like "The top foo counts are x (14), y (9) and z (2)"
+ *
+ * @param what For example: "word cloud words"
+ */
+function logTopCounts(what: string, counts: Record<string, number>) {
+  const keys = Object.keys(counts);
+  keys.sort((a, b) => counts[a] - counts[b]);
 
-  const topWordCloudWord = Object.keys(wordCloudCounts).reduce((a, b) =>
-    wordCloudCounts[a] > wordCloudCounts[b] ? a : b
-  );
-  console.log(
-    `The top word cloud word is "${topWordCloudWord}", we have ${wordCloudCounts[topWordCloudWord]} of those`
-  );
+  let message =
+    `The top ${what} counts are ` +
+    keys
+      .slice(-3)
+      .map((key) => `"${key}" (${counts[key]})`)
+      .reverse()
+      .join(", ");
+
+  const lastCommaIndex = message.lastIndexOf(", ");
+  if (lastCommaIndex !== -1) {
+    const before = message.substring(0, lastCommaIndex);
+    const after = message.substring(lastCommaIndex + 2);
+
+    message = before + " and " + after;
+  }
+
+  console.log(message);
 }
 
 /** Split "ape.bearCow" into ["ape", "bear", "cow"] */
