@@ -16,6 +16,16 @@ FIXME: Imagine an animated-webp demo here
 Color customizations are stored in `~/Library/Application Support/Code/User/settings.json`
 under the `workbench.colorCustomizations` key and can be restored with any text editor.
 
+# To install into VSCode
+
+1. `npm run package`
+1. In VSCode:
+   - Click Extensions
+   - Click the ... menu in the top right corner
+   - Click Install from VSIX...
+   - Pick the `99.99.99` one, that's the perpetual development version
+1. Do <kbd>⌘⇧P</kbd> and run the "Theminator: Toggle" command
+
 # TODO
 
 - Go through PRs and issues in
